@@ -1,27 +1,32 @@
-from urllib.parse import urlparse
+def detect_suspicious_keywords(email_body):
+    """Checks if the email body contains suspicious keywords."""
+    suspicious_keywords = [
+        "urgent action required",
+        "verify your account",
+        "security alert",
+        "click here immediately",
+        "prize winner",
+        "inheritance",
+        "IRS notice",
+        "your account will be suspended",
+        "limited time offer",
+        "free gift"
+    ]
+    found_keywords = []
+    for keyword in suspicious_keywords:
+        if keyword.lower() in email_body.lower():
+            found_keywords.append(keyword)
 
-def get_domain(url):
-    """Extracts the domain name from a URL."""
-    try:
-        parsed_url = urlparse(url)
-        return parsed_url.netloc
-    except:
-        return None
-
-def check_link_suspiciousness(url, trusted_domains):
-    """Checks if the domain of a URL is in the list of trusted domains."""
-    domain = get_domain(url)
-    if domain:
-        if domain in trusted_domains:
-            print(f"The domain '{domain}' appears to be trusted.")
-        else:
-            print(f"Warning: The domain '{domain}' is not in the trusted list.")
+    if found_keywords:
+        print("Potential Scam/Phishing Keywords Found:")
+        for keyword in found_keywords:
+            print(f"- {keyword}")
+        print("Be cautious with this email.")
     else:
-        print("Invalid URL provided.")
+        print("No obvious suspicious keywords found.")
 
 # --- How to use ---
 if __name__ == "__main__":
-    trusted_domains = ["yourbank.com", "paypal.com", "gmail.com", "outlook.com"] # Add your trusted domains
-    print("Enter a URL from the email:")
-    link_url = input()
-    check_link_suspiciousness(link_url, trusted_domains)
+    print("Enter the email body text (copy and paste):")
+    email_text = input()
+    detect_suspicious_keywords(email_text)
